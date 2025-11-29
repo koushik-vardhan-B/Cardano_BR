@@ -1,0 +1,281 @@
+{
+  "preamble": {
+    "title": "visionchain/contracts",
+    "description": "Aiken contracts for project 'visionchain/contracts'",
+    "version": "0.0.0",
+    "plutusVersion": "v3",
+    "compiler": {
+      "name": "Aiken",
+      "version": "v1.1.19+e525483"
+    },
+    "license": "Apache-2.0"
+  },
+  "validators": [
+    {
+      "title": "placeholder.placeholder.mint",
+      "redeemer": {
+        "title": "_redeemer",
+        "schema": {
+          "$ref": "#/definitions/Data"
+        }
+      },
+      "compiledCode": "58d001010029800aba2aba1aab9eaab9dab9a48888966002646465300130053754003300700398038012444b30013370e9000001c4c98dd7180518049baa0048acc004cdc3a400400713233226300b001300b300c0013009375400915980099b874801000e264c601460126ea80122b30013370e9003001c4c8cc898dd698058009805980600098049baa0048acc004cdc3a40100071326300a3009375400913233226375a60160026016601800260126ea8011007200e401c80390070c018c01c004c018004c00cdd5003452689b2b20021",
+      "hash": "f2388d136606a27c4a531d0040c3e12e07eb95cd5011793c160707dc"
+    },
+    {
+      "title": "placeholder.placeholder.spend",
+      "datum": {
+        "title": "_datum",
+        "schema": {
+          "$ref": "#/definitions/Data"
+        }
+      },
+      "redeemer": {
+        "title": "_redeemer",
+        "schema": {
+          "$ref": "#/definitions/Data"
+        }
+      },
+      "compiledCode": "58d001010029800aba2aba1aab9eaab9dab9a48888966002646465300130053754003300700398038012444b30013370e9000001c4c98dd7180518049baa0048acc004cdc3a400400713233226300b001300b300c0013009375400915980099b874801000e264c601460126ea80122b30013370e9003001c4c8cc898dd698058009805980600098049baa0048acc004cdc3a40100071326300a3009375400913233226375a60160026016601800260126ea8011007200e401c80390070c018c01c004c018004c00cdd5003452689b2b20021",
+      "hash": "f2388d136606a27c4a531d0040c3e12e07eb95cd5011793c160707dc"
+    },
+    {
+      "title": "placeholder.placeholder.withdraw",
+      "redeemer": {
+        "title": "_redeemer",
+        "schema": {
+          "$ref": "#/definitions/Data"
+        }
+      },
+      "compiledCode": "58d001010029800aba2aba1aab9eaab9dab9a48888966002646465300130053754003300700398038012444b30013370e9000001c4c98dd7180518049baa0048acc004cdc3a400400713233226300b001300b300c0013009375400915980099b874801000e264c601460126ea80122b30013370e9003001c4c8cc898dd698058009805980600098049baa0048acc004cdc3a40100071326300a3009375400913233226375a60160026016601800260126ea8011007200e401c80390070c018c01c004c018004c00cdd5003452689b2b20021",
+      "hash": "f2388d136606a27c4a531d0040c3e12e07eb95cd5011793c160707dc"
+    },
+    {
+      "title": "placeholder.placeholder.publish",
+      "redeemer": {
+        "title": "_redeemer",
+        "schema": {
+          "$ref": "#/definitions/Data"
+        }
+      },
+      "compiledCode": "58d001010029800aba2aba1aab9eaab9dab9a48888966002646465300130053754003300700398038012444b30013370e9000001c4c98dd7180518049baa0048acc004cdc3a400400713233226300b001300b300c0013009375400915980099b874801000e264c601460126ea80122b30013370e9003001c4c8cc898dd698058009805980600098049baa0048acc004cdc3a40100071326300a3009375400913233226375a60160026016601800260126ea8011007200e401c80390070c018c01c004c018004c00cdd5003452689b2b20021",
+      "hash": "f2388d136606a27c4a531d0040c3e12e07eb95cd5011793c160707dc"
+    },
+    {
+      "title": "placeholder.placeholder.vote",
+      "redeemer": {
+        "title": "_redeemer",
+        "schema": {
+          "$ref": "#/definitions/Data"
+        }
+      },
+      "compiledCode": "58d001010029800aba2aba1aab9eaab9dab9a48888966002646465300130053754003300700398038012444b30013370e9000001c4c98dd7180518049baa0048acc004cdc3a400400713233226300b001300b300c0013009375400915980099b874801000e264c601460126ea80122b30013370e9003001c4c8cc898dd698058009805980600098049baa0048acc004cdc3a40100071326300a3009375400913233226375a60160026016601800260126ea8011007200e401c80390070c018c01c004c018004c00cdd5003452689b2b20021",
+      "hash": "f2388d136606a27c4a531d0040c3e12e07eb95cd5011793c160707dc"
+    },
+    {
+      "title": "placeholder.placeholder.propose",
+      "redeemer": {
+        "title": "_redeemer",
+        "schema": {
+          "$ref": "#/definitions/Data"
+        }
+      },
+      "compiledCode": "58d001010029800aba2aba1aab9eaab9dab9a48888966002646465300130053754003300700398038012444b30013370e9000001c4c98dd7180518049baa0048acc004cdc3a400400713233226300b001300b300c0013009375400915980099b874801000e264c601460126ea80122b30013370e9003001c4c8cc898dd698058009805980600098049baa0048acc004cdc3a40100071326300a3009375400913233226375a60160026016601800260126ea8011007200e401c80390070c018c01c004c018004c00cdd5003452689b2b20021",
+      "hash": "f2388d136606a27c4a531d0040c3e12e07eb95cd5011793c160707dc"
+    },
+    {
+      "title": "placeholder.placeholder.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "compiledCode": "58d001010029800aba2aba1aab9eaab9dab9a48888966002646465300130053754003300700398038012444b30013370e9000001c4c98dd7180518049baa0048acc004cdc3a400400713233226300b001300b300c0013009375400915980099b874801000e264c601460126ea80122b30013370e9003001c4c8cc898dd698058009805980600098049baa0048acc004cdc3a40100071326300a3009375400913233226375a60160026016601800260126ea8011007200e401c80390070c018c01c004c018004c00cdd5003452689b2b20021",
+      "hash": "f2388d136606a27c4a531d0040c3e12e07eb95cd5011793c160707dc"
+    },
+    {
+      "title": "reward.reward_policy.mint",
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/reward~1RewardRedeemer"
+        }
+      },
+      "compiledCode": "59017e01010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cdc3a400130070024888966002600460106ea800e33001375c601660126ea800e265300130010019b88480024601a601c601c601c601c601c601c601c601c0029112cc004c018c030dd500444c8ca60026eb8c0440066eb4c044c0480066eb8c0440092225980098039b8d0018acc00566002600e005133712004905601452820208acc004c01cc020dd6180318091baa00a8a518a50404114a0808229410100c044004c034dd5004456600260046eb4c03cc034dd500444c008c00cdd6180098069baa0058a50402c805844b30010018a40011337009001198010011807000a01898041baa004488966002600a003132323298009bad30110019bae30110039bae3011002488966002602a0090088b20261808800980800098061baa0078acc004cdc3a40040031323259800980880140122c8078dd6980780098061baa0078b201440288b200e180380098019baa0078a4d13656400401",
+      "hash": "d38abdbf5061dde55776491abaafd8f290c9fc97883736c48e3b7c34"
+    },
+    {
+      "title": "reward.reward_policy.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "compiledCode": "59017e01010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cdc3a400130070024888966002600460106ea800e33001375c601660126ea800e265300130010019b88480024601a601c601c601c601c601c601c601c601c0029112cc004c018c030dd500444c8ca60026eb8c0440066eb4c044c0480066eb8c0440092225980098039b8d0018acc00566002600e005133712004905601452820208acc004c01cc020dd6180318091baa00a8a518a50404114a0808229410100c044004c034dd5004456600260046eb4c03cc034dd500444c008c00cdd6180098069baa0058a50402c805844b30010018a40011337009001198010011807000a01898041baa004488966002600a003132323298009bad30110019bae30110039bae3011002488966002602a0090088b20261808800980800098061baa0078acc004cdc3a40040031323259800980880140122c8078dd6980780098061baa0078b201440288b200e180380098019baa0078a4d13656400401",
+      "hash": "d38abdbf5061dde55776491abaafd8f290c9fc97883736c48e3b7c34"
+    },
+    {
+      "title": "verification.verification.spend",
+      "datum": {
+        "title": "datum",
+        "schema": {
+          "$ref": "#/definitions/verification~1VerificationDatum"
+        }
+      },
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/verification~1VerificationRedeemer"
+        }
+      },
+      "compiledCode": "59026c01010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cdc3a400530070024888966002600460106ea800e26466453001198009180798081808000cc02cdd5003c8c03cc0400066e2520004888966002600a007159800980298079baa0068992cc0056600260046eb4c00cc044dd5000c4cdc49bad30033011375400290044528201e8acc0056600260046eb4c014c044dd5000c4cdc49bad300530113754002906400c528201e8acc00528c4cdc4240006e34dd71809980a180a180a180a180a180a18089baa0018a50403d14a0807a294100f180918081baa0068b201c8acc004c02400e2b30013005300f375400d1325980099b8848000dc69bae301330113754019159800acc004c008dd6980198089baa001899b89375a600660226ea800520088a50403d15980098011bad3005301137540031337126eb4c014c044dd5000a41900314a0807a294100f4528201e30123010375400d164039159800980298079baa0068992cc004c8cc88cc008008004896600200314a115980099b8f375c602c00200714a31330020023017001404880a8dd6180a180a980a980a980a980a980a980a980a98091baa00a375c6026602860286028602860226ea8006266e25208c01375a600a60226ea8006294100f180918081baa0068b201c40388071300b375400f300e003488966002600800515980098079baa00a801c59010456600260100051323259800980a00140162c8090dd7180900098079baa00a8acc004cdc3a400800515980098079baa00a801c5901045900d201a4034300c300d001370e900018049baa0038b200e180380098019baa0078a4d1365640041",
+      "hash": "b1e54ca76a25807d2a7488a3547ac986cdc404a525ab5aa9d9b0f7ab"
+    },
+    {
+      "title": "verification.verification.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "compiledCode": "59026c01010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cdc3a400530070024888966002600460106ea800e26466453001198009180798081808000cc02cdd5003c8c03cc0400066e2520004888966002600a007159800980298079baa0068992cc0056600260046eb4c00cc044dd5000c4cdc49bad30033011375400290044528201e8acc0056600260046eb4c014c044dd5000c4cdc49bad300530113754002906400c528201e8acc00528c4cdc4240006e34dd71809980a180a180a180a180a180a18089baa0018a50403d14a0807a294100f180918081baa0068b201c8acc004c02400e2b30013005300f375400d1325980099b8848000dc69bae301330113754019159800acc004c008dd6980198089baa001899b89375a600660226ea800520088a50403d15980098011bad3005301137540031337126eb4c014c044dd5000a41900314a0807a294100f4528201e30123010375400d164039159800980298079baa0068992cc004c8cc88cc008008004896600200314a115980099b8f375c602c00200714a31330020023017001404880a8dd6180a180a980a980a980a980a980a980a980a98091baa00a375c6026602860286028602860226ea8006266e25208c01375a600a60226ea8006294100f180918081baa0068b201c40388071300b375400f300e003488966002600800515980098079baa00a801c59010456600260100051323259800980a00140162c8090dd7180900098079baa00a8acc004cdc3a400800515980098079baa00a801c5901045900d201a4034300c300d001370e900018049baa0038b200e180380098019baa0078a4d1365640041",
+      "hash": "b1e54ca76a25807d2a7488a3547ac986cdc404a525ab5aa9d9b0f7ab"
+    }
+  ],
+  "definitions": {
+    "ByteArray": {
+      "dataType": "bytes"
+    },
+    "Data": {
+      "title": "Data",
+      "description": "Any Plutus data."
+    },
+    "Int": {
+      "dataType": "integer"
+    },
+    "Option$aiken/crypto/VerificationKeyHash": {
+      "title": "Option",
+      "anyOf": [
+        {
+          "title": "Some",
+          "description": "An optional value.",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "$ref": "#/definitions/aiken~1crypto~1VerificationKeyHash"
+            }
+          ]
+        },
+        {
+          "title": "None",
+          "description": "Nothing.",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        }
+      ]
+    },
+    "aiken/crypto/VerificationKeyHash": {
+      "title": "VerificationKeyHash",
+      "dataType": "bytes"
+    },
+    "reward/RewardRedeemer": {
+      "title": "RewardRedeemer",
+      "anyOf": [
+        {
+          "title": "MintReward",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "verification_id",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "recipient",
+              "$ref": "#/definitions/aiken~1crypto~1VerificationKeyHash"
+            },
+            {
+              "title": "amount",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        },
+        {
+          "title": "BurnReward",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": [
+            {
+              "title": "amount",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        }
+      ]
+    },
+    "verification/VerificationDatum": {
+      "title": "VerificationDatum",
+      "anyOf": [
+        {
+          "title": "VerificationDatum",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "image_hash",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "diagnosis",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "confidence",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "timestamp",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "verifier",
+              "$ref": "#/definitions/aiken~1crypto~1VerificationKeyHash"
+            },
+            {
+              "title": "patient",
+              "$ref": "#/definitions/Option$aiken~1crypto~1VerificationKeyHash"
+            },
+            {
+              "title": "verification_id",
+              "$ref": "#/definitions/ByteArray"
+            }
+          ]
+        }
+      ]
+    },
+    "verification/VerificationRedeemer": {
+      "title": "VerificationRedeemer",
+      "anyOf": [
+        {
+          "title": "CreateVerification",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": []
+        },
+        {
+          "title": "UpdateVerification",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": [
+            {
+              "title": "original_verification_id",
+              "$ref": "#/definitions/ByteArray"
+            }
+          ]
+        },
+        {
+          "title": "ClaimReward",
+          "dataType": "constructor",
+          "index": 2,
+          "fields": []
+        }
+      ]
+    }
+  }
+}

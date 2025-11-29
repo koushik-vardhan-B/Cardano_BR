@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import NewScreening from './components/NewScreening';
 import ResultScreen from './components/ResultScreen';
-import BlockchainScreen from './components/BlockchainScreen';
+import VisionChainScreen from './components/VisionChainScreen';
+import WalletDashboard from './components/WalletDashboard';
 import LoadingScreen from './components/LoadingScreen';
 import ThemeToggle from './components/common/ThemeToggle';
 import Toast from './components/common/Toast';
@@ -18,7 +19,7 @@ function App({ theme, toggleTheme }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
 
-  // State Machine: 'new', 'loading', 'result', 'blockchain'
+  // State Machine: 'new', 'loading', 'result', 'blockchain', 'wallet'
   const [currentScreen, setCurrentScreen] = useState('new');
   const [toast, setToast] = useState(null);
 
@@ -324,6 +325,9 @@ function App({ theme, toggleTheme }) {
               <button onClick={() => setCurrentScreen('blockchain')} className={`w-full text-left py-2 px-3 rounded-md text-sm ${currentScreen === 'blockchain' ? 'bg-slate-200 dark:bg-slate-800/50' : 'hover:bg-slate-50 dark:hover:bg-slate-800/30'}`}>
                 Verification
               </button>
+              <button onClick={() => setCurrentScreen('wallet')} className={`w-full text-left py-2 px-3 rounded-md text-sm ${currentScreen === 'wallet' ? 'bg-slate-200 dark:bg-slate-800/50' : 'hover:bg-slate-50 dark:hover:bg-slate-800/30'}`}>
+                💳 Wallet
+              </button>
 
               {/* Demo Reset Button */}
               {user?.uid === 'demo-user' && (
@@ -339,7 +343,7 @@ function App({ theme, toggleTheme }) {
             <div className="space-y-4">
               <div className="flex items-start justify-between">
                 <div>
-                  <h2 className="text-xl font-semibold">{currentScreen === 'new' ? 'New Screening' : currentScreen === 'result' ? 'Screening Result' : 'Blockchain Record'}</h2>
+                  <h2 className="text-xl font-semibold">{currentScreen === 'new' ? 'New Screening' : currentScreen === 'result' ? 'Screening Result' : currentScreen === 'wallet' ? 'Wallet Dashboard' : 'Blockchain Record'}</h2>
                   <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Operator: {user?.displayName || 'Demo User'}</p>
                 </div>
                 <div className="text-sm text-slate-500 dark:text-slate-400">Clinic: Demo Clinic 01</div>
@@ -359,7 +363,11 @@ function App({ theme, toggleTheme }) {
                 )}
 
                 {currentScreen === 'blockchain' && (
-                  <BlockchainScreen record={globalState} onBack={handleBackToResult} />
+                  <VisionChainScreen record={globalState} onBack={handleBackToResult} />
+                )}
+
+                {currentScreen === 'wallet' && (
+                  <WalletDashboard />
                 )}
               </div>
             </div>

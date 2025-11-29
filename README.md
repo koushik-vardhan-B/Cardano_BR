@@ -1,24 +1,79 @@
-# 🩺 Diabetic Retinopathy Detection System
+# 🔗👁️ VisionChain - Blockchain-Powered Medical Verification
 
-AI-powered system for detecting diabetic retinopathy from retinal images using ResNet50 deep learning model.
+**Cardano Asia Hackathon 2025 - IBW Edition**
+
+VisionChain is a revolutionary platform that combines AI-powered diabetic retinopathy detection with Cardano blockchain verification and a token-based reward system. Built for the Cardano Asia Hackathon, VisionChain demonstrates how blockchain technology can bring transparency, trust, and incentivization to healthcare.
+
+## 🌟 What Makes VisionChain Special
+
+### The Problem
+- ❌ Medical diagnoses lack transparent audit trails
+- ❌ Centralized systems vulnerable to tampering
+- ❌ No incentives for quality medical data contribution
+- ❌ Patients can't independently verify their records
+
+### Our Solution
+- ✅ **AI-Powered Analysis** - ResNet50 deep learning for diabetic retinopathy detection
+- ✅ **Blockchain Verification** - Immutable diagnosis records on Cardano
+- ✅ **VISION Token Rewards** - Earn tokens for verified diagnoses
+- ✅ **Decentralized Trust** - Transparent, verifiable medical records
+
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     VisionChain Platform                     │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│  Frontend (Streamlit)          Backend (FastAPI)             │
+│  ┌──────────────────┐         ┌──────────────────┐          │
+│  │ • Image Upload   │────────▶│ • AI Model       │          │
+│  │ • Wallet Connect │         │ • Blockchain API │          │
+│  │ • Rewards UI     │◀────────│ • Verification   │          │
+│  └──────────────────┘         └──────────────────┘          │
+│           │                            │                     │
+│           │                            ▼                     │
+│           │                   ┌──────────────────┐          │
+│           │                   │ Blockchain       │          │
+│           │                   │ Service          │          │
+│           │                   └──────────────────┘          │
+│           │                            │                     │
+│           └────────────────────────────┼─────────────────────┤
+│                                        ▼                     │
+│                        Cardano Preprod Testnet               │
+│                        ┌──────────────────────┐             │
+│                        │ Smart Contracts      │             │
+│                        │ • Verification.ak    │             │
+│                        │ • Reward.ak          │             │
+│                        │ • VISION Tokens      │             │
+│                        └──────────────────────┘             │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ## 📋 Project Structure
 
 ```
-pro/
+visionchain/
 ├── backend/                    # FastAPI backend
-│   ├── main.py                # API server
-│   ├── requirements.txt       # Backend dependencies
-│   ├── uploads/               # Uploaded images (auto-created)
-│   └── heatmaps/              # Generated heatmaps (auto-created)
+│   ├── main.py                # Main API server with blockchain endpoints
+│   ├── blockchain_service.py  # Cardano blockchain integration
+│   ├── database.py            # Supabase database models
+│   ├── requirements.txt       # Python dependencies
+│   ├── .env.example          # Environment configuration template
+│   ├── uploads/              # Uploaded images (auto-created)
+│   └── heatmaps/             # Generated heatmaps (auto-created)
 ├── frontend/                   # Streamlit interface
 │   ├── app.py                 # Streamlit app
 │   └── requirements.txt       # Frontend dependencies
-├── ResNet50-APTOS-DR/         # Model directory
+├── contracts/                  # Aiken smart contracts
+│   ├── validators/
+│   │   ├── verification.ak    # Verification contract
+│   │   └── reward.ak         # Reward minting policy
+│   ├── plutus.json           # Compiled contracts
+│   └── aiken.toml            # Aiken configuration
+├── ResNet50-APTOS-DR/         # AI Model directory
 │   └── diabetic_retinopathy_full_model.pth
-├── dr_inference.py            # Original inference script
-├── setup.py                   # Model setup script
-└── test_eye.png              # Sample test image
+└── README.md                  # This file
 ```
 
 ## 🚀 Quick Start
@@ -26,8 +81,9 @@ pro/
 ### Prerequisites
 
 - Python 3.8+
-- pip
-- Git LFS (for model files)
+- Node.js 18+ (for wallet integration)
+- Cardano wallet (Nami or Eternl)
+- Blockfrost API key (free at blockfrost.io)
 
 ### 1️⃣ Install Dependencies
 
@@ -43,7 +99,28 @@ cd frontend
 pip install -r requirements.txt
 ```
 
-### 2️⃣ Start the Backend API
+### 2️⃣ Configure Environment
+
+```bash
+cd backend
+cp .env.example .env
+# Edit .env and add your Blockfrost API key
+```
+
+**Get Blockfrost API Key:**
+1. Go to https://blockfrost.io/
+2. Sign up for free account
+3. Create new project for "Cardano Preprod"
+4. Copy project ID to `.env`
+
+### 3️⃣ Set Up Wallet
+
+1. Install [Nami](https://namiwallet.io/) or [Eternl](https://eternl.io/) browser extension
+2. Create wallet or import existing
+3. Switch to **Preprod Testnet** in wallet settings
+4. Get free test ADA from [Cardano Faucet](https://docs.cardano.org/cardano-testnet/tools/faucet/)
+
+### 4️⃣ Start the Backend API
 
 ```bash
 cd backend
@@ -52,7 +129,7 @@ python main.py
 
 The API will start on `http://localhost:8000`
 
-### 3️⃣ Launch the Streamlit Interface
+### 5️⃣ Launch the Frontend
 
 In a new terminal:
 
@@ -65,89 +142,57 @@ The interface will open in your browser at `http://localhost:8501`
 
 ## 🔌 API Endpoints
 
-### Health Check
-```bash
-GET /health
-```
-Returns API status and model information.
+### Core DR Detection
 
-### Get Disease Classes
-```bash
-GET /classes
-```
-Returns list of disease classes and descriptions.
+- `GET /health` - API health check
+- `GET /classes` - Get disease classes
+- `POST /predict` - Upload image for DR detection
+- `GET /heatmap/{filename}` - Download GradCAM heatmap
 
-### Predict
-```bash
-POST /predict
-```
-Upload an image for diabetic retinopathy detection.
+### VisionChain Blockchain
 
-**Request:**
-- Method: POST
-- Content-Type: multipart/form-data
-- Body: image file
+- `POST /blockchain/verify` - Submit diagnosis to blockchain
+- `GET /blockchain/history/{wallet}` - Get verification history
+- `POST /blockchain/claim-reward` - Claim VISION tokens
+- `GET /blockchain/balance/{wallet}` - Check token balance
+- `GET /blockchain/contracts` - Get contract addresses
+- `GET /blockchain/reward-tiers` - Get reward tier information
 
-**Response:**
-```json
-{
-  "diagnosis": "No DR",
-  "confidence": 95.67,
-  "class_probabilities": {
-    "No DR": 95.67,
-    "Mild": 2.31,
-    "Moderate": 1.45,
-    "Severe": 0.42,
-    "Proliferative": 0.15
-  },
-  "prediction_index": 0,
-  "heatmap_available": true,
-  "heatmap_filename": "heatmap_test_eye.png"
-}
-```
+## 💰 VISION Token Rewards
 
-### Get Heatmap
-```bash
-GET /heatmap/{filename}
-```
-Download the generated GradCAM heatmap.
+VisionChain rewards users with VISION tokens based on diagnosis quality:
 
-## 🧪 Testing with cURL
+| Tier | Confidence | Reward | Description |
+|------|-----------|--------|-------------|
+| 🥉 **Low** | 0-69% | 25 VISION | Basic verification |
+| 🥈 **Medium** | 70-89% | 50 VISION | Good confidence |
+| 🥇 **High** | 90-100% | 100 VISION | Excellent confidence |
+| ⭐ **Professional** | Any | +50 VISION | Medical professional bonus |
 
-```bash
-# Health check
-curl http://localhost:8000/health
+**Maximum reward:** 150 VISION tokens per verification
 
-# Get classes
-curl http://localhost:8000/classes
+## 🔬 Smart Contracts
 
-# Predict (replace with your image path)
-curl -X POST -F "file=@test_eye.png" http://localhost:8000/predict
+### Verification Contract (`verification.ak`)
 
-# Download heatmap
-curl http://localhost:8000/heatmap/heatmap_test_eye.png --output heatmap.jpg
-```
+Stores immutable medical diagnosis records on Cardano blockchain:
 
-## 🧪 Testing with Python
+- **Image Hash** - SHA-256 hash of retinal image
+- **Diagnosis** - DR severity (0-4)
+- **Confidence** - AI confidence score (0-100)
+- **Timestamp** - Verification time
+- **Verifier** - Wallet address of verifier
+- **Patient** - Optional patient wallet address
+- **Verification ID** - Unique identifier
 
-```python
-import requests
+### Reward Contract (`reward.ak`)
 
-# Upload and predict
-with open('test_eye.png', 'rb') as f:
-    files = {'file': f}
-    response = requests.post('http://localhost:8000/predict', files=files)
-    result = response.json()
-    print(f"Diagnosis: {result['diagnosis']}")
-    print(f"Confidence: {result['confidence']}%")
+Mints and distributes VISION tokens:
 
-# Download heatmap
-if result['heatmap_available']:
-    heatmap_url = f"http://localhost:8000/heatmap/{result['heatmap_filename']}"
-    heatmap_response = requests.get(heatmap_url)
-    with open('heatmap.jpg', 'wb') as f:
-        f.write(heatmap_response.content)
-```
+- **Tiered Rewards** - Based on confidence levels
+- **Professional Bonus** - Extra tokens for verified professionals
+- **Burn Mechanism** - Token burning capability
+- **Anti-Double-Claim** - Prevents reward duplication
 
 ## 📊 Disease Classes
 
@@ -159,30 +204,92 @@ if result['heatmap_available']:
 | **Severe** | Severe Non-Proliferative DR | 🔴 High |
 | **Proliferative** | Proliferative DR | ⚫ Critical |
 
-## 🔥 Features
+## 🔥 Key Features
 
-- ✅ **FastAPI Backend** - High-performance REST API
-- ✅ **Streamlit Interface** - User-friendly web interface
-- ✅ **Retinal Image Validation** - Automatically rejects non-retinal images
+### AI & Medical
+- ✅ **ResNet50 Model** - State-of-the-art deep learning
 - ✅ **GradCAM Heatmaps** - Visual explanation of predictions
+- ✅ **Image Validation** - Automatic retinal image verification
 - ✅ **Multi-class Classification** - 5 disease stages
 - ✅ **Confidence Scores** - Probability for each class
+
+### Blockchain & Web3
+- ✅ **Cardano Integration** - Built on Cardano blockchain
+- ✅ **Aiken Smart Contracts** - Plutus V3 validators
+- ✅ **Wallet Support** - Nami, Eternl compatible
+- ✅ **Testnet Ready** - Full Preprod testnet support
+- ✅ **IPFS Anchoring** - Decentralized storage option
+
+### Platform
+- ✅ **FastAPI Backend** - High-performance REST API
+- ✅ **Streamlit Interface** - User-friendly web UI
 - ✅ **CORS Enabled** - Ready for frontend integration
 - ✅ **GPU Support** - Automatic CUDA detection
+- ✅ **Supabase Integration** - Optional data persistence
 
-## 🔍 Retinal Image Validation
+## 🎯 Workflows
 
-The system automatically validates uploaded images to ensure they are genuine retinal fundus photographs. The validation checks for:
+### 1. AI + Blockchain Verification Workflow
+```
+User uploads image → AI analyzes → Generates diagnosis → 
+Creates blockchain transaction → Submits to smart contract → 
+Returns verification hash → Displays to user
+```
 
-1. **RGB Color Format** - Retinal images must be in color
-2. **Minimum Resolution** - At least 100x100 pixels
-3. **Aspect Ratio** - Roughly square (0.7 to 1.5 ratio)
-4. **Color Saturation** - Sufficient color (not grayscale)
-5. **Circular Structure** - Typical circular field of view
-6. **Color Distribution** - Reddish/orange tones (not predominantly blue)
-7. **Proper Exposure** - Not too dark or overexposed
+### 2. Reward Distribution Workflow
+```
+Diagnosis verified → Calculates reward tier → 
+Checks if already claimed → Mints VISION tokens → 
+Transfers to user wallet → Updates on-chain record
+```
 
-**Invalid images will be rejected with a helpful error message** explaining why the image doesn't appear to be a retinal fundus photograph.
+### 3. Complete User Journey
+```
+Connect wallet → Upload retinal image → 
+AI processes image → View diagnosis + confidence → 
+Submit to blockchain → Receive verification → 
+Claim VISION rewards → View history
+```
+
+## 🧪 Testing
+
+### Test with Sample Image
+
+```bash
+# Health check
+curl http://localhost:8000/health
+
+# Get reward tiers
+curl http://localhost:8000/blockchain/reward-tiers
+
+# Predict (replace with your image path)
+curl -X POST -F "file=@test_eye.png" http://localhost:8000/predict
+
+# Get contract info
+curl http://localhost:8000/blockchain/contracts
+```
+
+### Test Blockchain Integration
+
+```python
+import requests
+
+# Submit verification to blockchain
+data = {
+    "screening_id": "SCR-TEST-001",
+    "image_path": "uploads/test_eye.png",
+    "diagnosis": 0,
+    "confidence": 95,
+    "verifier_address": "addr_test1..."
+}
+response = requests.post('http://localhost:8000/blockchain/verify', data=data)
+print(response.json())
+
+# Check balance
+wallet = "addr_test1..."
+response = requests.get(f'http://localhost:8000/blockchain/balance/{wallet}')
+print(response.json())
+```
 
 ## 🛠️ Model Information
 
@@ -191,17 +298,29 @@ The system automatically validates uploaded images to ensure they are genuine re
 - **Input Size:** 224x224 RGB
 - **Output Classes:** 5 (No DR, Mild, Moderate, Severe, Proliferative)
 - **Framework:** PyTorch
+- **Model Size:** ~100MB
 
-## 📝 Notes
+## 🌐 Blockchain Details
 
-- The model file is ~100MB and stored via Git LFS
-- First run will take longer as the model loads into memory
-- GPU acceleration is automatic if CUDA is available
-- Heatmaps show which areas the model focused on for predictions
+- **Network:** Cardano Preprod Testnet
+- **Smart Contract Language:** Aiken (Plutus V3)
+- **Blockchain API:** Blockfrost
+- **Python SDK:** PyCardano
+- **Explorer:** https://preprod.cardanoscan.io/
 
 ## ⚠️ Medical Disclaimer
 
 This tool is for **educational and research purposes only**. It should not be used as a substitute for professional medical diagnosis. Always consult qualified healthcare professionals for medical advice.
+
+## 🏆 Hackathon Highlights
+
+**Built for Cardano Asia Hackathon 2025 - IBW Edition**
+
+- 🎯 **Real-world Use Case** - Healthcare verification
+- 🔗 **Full Blockchain Integration** - Smart contracts + tokens
+- 🤖 **AI-Powered** - Deep learning model
+- 💎 **Complete Solution** - End-to-end platform
+- 🚀 **Production-Ready** - Scalable architecture
 
 ## 🐛 Troubleshooting
 
@@ -209,14 +328,34 @@ This tool is for **educational and research purposes only**. It should not be us
 - Ensure the model file exists at `ResNet50-APTOS-DR/diabetic_retinopathy_full_model.pth`
 - Run `python setup.py` to download the model
 
-**API connection error:**
-- Make sure the backend is running on port 8000
-- Check firewall settings
+**Blockchain connection error:**
+- Check your Blockfrost API key in `.env`
+- Verify you're using Preprod testnet key
+- Check network connectivity
 
-**CUDA errors:**
-- The system will automatically fall back to CPU if CUDA is unavailable
-- No action needed
+**Wallet not connecting:**
+- Ensure wallet extension is installed
+- Switch wallet to Preprod testnet
+- Refresh the page
+
+**No test ADA:**
+- Visit https://docs.cardano.org/cardano-testnet/tools/faucet/
+- Enter your Preprod testnet address
+- Wait a few minutes for funds
 
 ## 📄 License
 
-This project uses the APTOS 2019 dataset and ResNet50 architecture.
+This project uses the APTOS 2019 dataset and ResNet50 architecture. Built with Cardano blockchain technology.
+
+## 🙏 Acknowledgments
+
+- **EMURGO** - For hosting Cardano Asia Hackathon
+- **Cardano Foundation** - For blockchain infrastructure
+- **Aiken Team** - For smart contract language
+- **APTOS** - For diabetic retinopathy dataset
+
+---
+
+**Built with ❤️ for Cardano Asia Hackathon 2025**
+
+*VisionChain - Bringing transparency and trust to healthcare through blockchain*

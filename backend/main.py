@@ -40,6 +40,9 @@ from database import (
     clear_all_screenings, create_anchor_log, get_anchor_logs
 )
 
+# VisionChain Blockchain Service
+from blockchain_service import blockchain_service
+
 # Supabase and Groq
 from supabase import create_client, Client
 from groq import Groq
@@ -739,6 +742,163 @@ async def clear_screenings_endpoint():
     
     success = clear_all_screenings(supabase)
     return {"cleared": success}
+
+# ============================================================================
+# VISIONCHAIN BLOCKCHAIN ENDPOINTS
+# ============================================================================
+
+@app.post("/blockchain/verify")
+async def submit_blockchain_verification(
+    screening_id: str = Form(...),
+    image_path: str = Form(...),
+    diagnosis: int = Form(...),
+    confidence: int = Form(...),
+    verifier_address: str = Form(...),
+    patient_address: Optional[str] = Form(None)
+):
+    """
+    Submit medical diagnosis verification to Cardano blockchain
+    
+    Args:
+        screening_id: Unique screening identifier
+        image_path: Path to the medical image
+        diagnosis: Diagnosis result (0-4)
+        confidence: Confidence score (0-100)
+        verifier_address: Wallet address of verifier
+        patient_address: Optional patient wallet address
+    
+    Returns:
+        Transaction details and verification ID
+    """
+    try:
+        result = await blockchain_service.submit_verification(
+            image_path=image_path,
+            diagnosis=diagnosis,
+            confidence=confidence,
+            verifier_address=verifier_address,
+            patient_address=patient_address
+        )
+        
+        return JSONResponse(content=result)
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Blockchain verification failed: {str(e)}")
+
+@app.get("/blockchain/history/{wallet_address}")
+async def get_blockchain_history(wallet_address: str):
+    """
+    Get verification history for a wallet address
+    
+    Args:
+        wallet_address: Cardano wallet address
+    
+    Returns:
+        List of verification records
+    """
+    try:
+        history = await blockchain_service.get_verification_history(wallet_address)
+        return JSONResponse(content={"wallet": wallet_address, "verifications": history})
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch history: {str(e)}")
+
+@app.post("/blockchain/claim-reward")
+async def claim_blockchain_reward(
+    verification_id: str = Form(...),
+    wallet_address: str = Form(...)
+):
+    """
+    Claim VISION token reward for verified diagnosis
+    
+    Args:
+        verification_id: Verification ID to claim reward for
+        wallet_address: Wallet address to receive tokens
+    
+    Returns:
+        Transaction details for reward claim
+    """
+    try:
+        result = await blockchain_service.claim_reward(
+            verification_id=verification_id,
+            wallet_address=wallet_address
+        )
+        
+        return JSONResponse(content=result)
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Reward claim failed: {str(e)}")
+
+@app.get("/blockchain/balance/{wallet_address}")
+async def get_blockchain_balance(wallet_address: str):
+    """
+    Get VISION token balance and statistics for a wallet
+    
+    Args:
+        wallet_address: Cardano wallet address
+    
+    Returns:
+        Balance and statistics
+    """
+    try:
+        balance = await blockchain_service.get_token_balance(wallet_address)
+        return JSONResponse(content=balance)
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch balance: {str(e)}")
+
+@app.get("/blockchain/contracts")
+async def get_contract_info():
+    """
+    Get smart contract addresses and information
+    
+    Returns:
+        Contract addresses and network info
+    """
+    try:
+        addresses = blockchain_service.get_contract_addresses()
+        return JSONResponse(content={
+            "network": "preprod",
+            "contracts": addresses,
+            "explorer_base": "https://preprod.cardanoscan.io"
+        })
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch contract info: {str(e)}")
+
+@app.get("/blockchain/reward-tiers")
+async def get_reward_tiers():
+    """
+    Get reward tier information
+    
+    Returns:
+        Reward amounts for different confidence levels
+    """
+    return JSONResponse(content={
+        "tiers": {
+            "low": {
+                "confidence_range": "0-69%",
+                "reward": blockchain_service.config.REWARD_TIER_LOW,
+                "token": "VISION"
+            },
+            "medium": {
+                "confidence_range": "70-89%",
+                "reward": blockchain_service.config.REWARD_TIER_MEDIUM,
+                "token": "VISION"
+            },
+            "high": {
+                "confidence_range": "90-100%",
+                "reward": blockchain_service.config.REWARD_TIER_HIGH,
+                "token": "VISION"
+            },
+            "professional_bonus": {
+                "description": "Additional reward for professional verification",
+                "reward": blockchain_service.config.REWARD_PROFESSIONAL_BONUS,
+                "token": "VISION"
+            }
+        },
+        "total_possible": blockchain_service.config.REWARD_TIER_HIGH + blockchain_service.config.REWARD_PROFESSIONAL_BONUS
+    })
+
 
 # ============================================================================
 # MAIN
