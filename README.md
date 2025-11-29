@@ -163,11 +163,26 @@ if result['heatmap_available']:
 
 - ✅ **FastAPI Backend** - High-performance REST API
 - ✅ **Streamlit Interface** - User-friendly web interface
+- ✅ **Retinal Image Validation** - Automatically rejects non-retinal images
 - ✅ **GradCAM Heatmaps** - Visual explanation of predictions
 - ✅ **Multi-class Classification** - 5 disease stages
 - ✅ **Confidence Scores** - Probability for each class
 - ✅ **CORS Enabled** - Ready for frontend integration
 - ✅ **GPU Support** - Automatic CUDA detection
+
+## 🔍 Retinal Image Validation
+
+The system automatically validates uploaded images to ensure they are genuine retinal fundus photographs. The validation checks for:
+
+1. **RGB Color Format** - Retinal images must be in color
+2. **Minimum Resolution** - At least 100x100 pixels
+3. **Aspect Ratio** - Roughly square (0.7 to 1.5 ratio)
+4. **Color Saturation** - Sufficient color (not grayscale)
+5. **Circular Structure** - Typical circular field of view
+6. **Color Distribution** - Reddish/orange tones (not predominantly blue)
+7. **Proper Exposure** - Not too dark or overexposed
+
+**Invalid images will be rejected with a helpful error message** explaining why the image doesn't appear to be a retinal fundus photograph.
 
 ## 🛠️ Model Information
 

@@ -122,6 +122,38 @@ with col1:
                         st.session_state.result = result
                         st.session_state.uploaded_filename = uploaded_file.name
                         st.success("✅ Analysis complete!")
+                        
+                        # Show validation message if available
+                        if result.get('validation_message'):
+                            st.info(f"✓ {result['validation_message']}")
+                    elif response.status_code == 400:
+                        # Validation error (not a retinal image)
+                        error_detail = response.json().get('detail', 'Invalid image')
+                        
+                        # Display prominent warning
+                        st.warning(f"### ⚠️ {error_detail}")
+                        
+                        st.info("""
+                        **What is a retinal fundus image?**
+                        
+                        A retinal fundus image is a photograph of the back of your eye, showing:
+                        - 👁️ The retina (inner surface of the eye)
+                        - 🔴 Blood vessels
+                        - 🟡 Optic disc (where the optic nerve connects)
+                        - ⚫ Macula (central area for sharp vision)
+                        
+                        **Characteristics of valid retinal images:**
+                        - Circular field of view
+                        - Reddish/orange coloring
+                        - Visible blood vessel network
+                        - Taken with specialized fundus camera
+                        
+                        **This system will NOT work with:**
+                        - ❌ Regular photos
+                        - ❌ Screenshots
+                        - ❌ Drawings or illustrations
+                        - ❌ Other medical images (X-rays, CT scans, etc.)
+                        """)
                     else:
                         st.error(f"❌ Error: {response.json().get('detail', 'Unknown error')}")
                 

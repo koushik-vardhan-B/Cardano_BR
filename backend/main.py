@@ -56,6 +56,97 @@ preprocess = transforms.Compose([
 CLASSES = ["No DR", "Mild", "Moderate", "Severe", "Proliferative"]
 
 
+def is_retina_image(image: Image.Image) -> tuple[bool, str]:
+    """
+    Validate if the uploaded image is a retinal fundus image.
+    
+    Returns:
+        tuple: (is_valid, error_message)
+    """
+    try:
+        # Convert to numpy array
+        img_array = np.array(image)
+        
+        # Check 1: Image should be RGB
+        if len(img_array.shape) != 3 or img_array.shape[2] != 3:
+            return False, "Image must be in RGB format (retinal images are color images)"
+        
+        # Check 2: Minimum resolution (retinal images are typically high-res)
+        height, width = img_array.shape[:2]
+        if height < 100 or width < 100:
+            return False, f"Image resolution too low ({width}x{height}). Retinal images should be at least 100x100 pixels"
+        
+        # Check 3: Aspect ratio (retinal images are roughly square)
+        aspect_ratio = width / height
+        if aspect_ratio < 0.7 or aspect_ratio > 1.5:
+            return False, f"Invalid aspect ratio ({aspect_ratio:.2f}). Retinal images should be roughly square"
+        
+        # Check 4: Color distribution (retinal images have specific color characteristics)
+        # Convert to HSV for better color analysis
+        img_hsv = cv2.cvtColor(img_array, cv2.COLOR_RGB2HSV)
+        
+        # Retinal images typically have:
+        # - Reddish/orange hues (blood vessels, retina)
+        # - Some darker regions (blood vessels, optic disc)
+        # - Not predominantly blue, green, or grayscale
+        
+        # Check average saturation (retinal images have good saturation)
+        avg_saturation = np.mean(img_hsv[:, :, 1])
+        if avg_saturation < 20:  # Too desaturated (likely grayscale or very pale)
+            return False, "Image appears to be grayscale or lacks color. Retinal images should have visible blood vessels and color"
+        
+        # Check 5: Detect circular structure (retinal images have circular field of view)
+        gray = cv2.cvtColor(img_array, cv2.COLOR_RGB2GRAY)
+        
+        # Apply threshold to find the main circular region
+        _, thresh = cv2.threshold(gray, 10, 255, cv2.THRESH_BINARY)
+        
+        # Find contours
+        contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        
+        if len(contours) > 0:
+            # Get the largest contour
+            largest_contour = max(contours, key=cv2.contourArea)
+            area = cv2.contourArea(largest_contour)
+            
+            # Calculate circularity
+            perimeter = cv2.arcLength(largest_contour, True)
+            if perimeter > 0:
+                circularity = 4 * np.pi * area / (perimeter * perimeter)
+                
+                # Retinal images should have a somewhat circular main region
+                # (not perfectly circular due to variations, but should be > 0.3)
+                if circularity < 0.2:
+                    return False, "Image does not show the typical circular structure of a retinal fundus image"
+        
+        # Check 6: Color channel analysis
+        # Retinal images typically have strong red channel (blood, retina)
+        red_channel = img_array[:, :, 0]
+        green_channel = img_array[:, :, 1]
+        blue_channel = img_array[:, :, 2]
+        
+        avg_red = np.mean(red_channel)
+        avg_green = np.mean(green_channel)
+        avg_blue = np.mean(blue_channel)
+        
+        # Red and green should be dominant (not blue)
+        if avg_blue > avg_red and avg_blue > avg_green:
+            return False, "Image has unusual color distribution. Retinal images should have reddish/orange tones, not predominantly blue"
+        
+        # Check 7: Brightness (retinal images shouldn't be too dark or too bright)
+        avg_brightness = np.mean(gray)
+        if avg_brightness < 15:
+            return False, "Image is too dark. Please upload a properly illuminated retinal image"
+        if avg_brightness > 240:
+            return False, "Image is overexposed. Please upload a properly exposed retinal image"
+        
+        # All checks passed
+        return True, "Valid retinal image"
+    
+    except Exception as e:
+        return False, f"Error validating image: {str(e)}"
+
+
 def load_model():
     """Load the trained ResNet50 model"""
     global MODEL
@@ -204,6 +295,14 @@ async def predict(file: UploadFile = File(...)):
         contents = await file.read()
         image = Image.open(io.BytesIO(contents)).convert('RGB')
         
+        # Validate if it's a retina image
+        is_valid, validation_message = is_retina_image(image)
+        if not is_valid:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"⚠️ Not a retinal fundus image: {validation_message}"
+            )
+        
         # Save uploaded image
         upload_path = os.path.join(UPLOAD_DIR, file.filename)
         image.save(upload_path)
@@ -227,13 +326,17 @@ async def predict(file: UploadFile = File(...)):
             "class_probabilities": {k: round(v, 2) for k, v in result["class_probabilities"].items()},
             "prediction_index": result["prediction_index"],
             "heatmap_available": heatmap_generated is not None,
-            "heatmap_filename": heatmap_filename if heatmap_generated else None
+            "heatmap_filename": heatmap_filename if heatmap_generated else None,
+            "validation_message": validation_message
         }
         
         return JSONResponse(content=response)
     
+    except HTTPException:
+        # Re-raise validation errors and other HTTP exceptions
+        raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error processing image: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Unexpected error processing image: {str(e)}")
 
 
 @app.get("/heatmap/{filename}")
